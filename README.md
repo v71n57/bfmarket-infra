@@ -16,10 +16,10 @@ Bfmarket - это веб-сайт для покупок на основе мик
 
 **Используемые инструменты/фреймворки:**
 
-Gin для создания REST API
-Starlette как асинхронный веб-сервер Python
-Redis как база данных корзин покупателей.
-PostgreSQL как база данных товаров.
+- Gin для создания REST API
+- Starlette как асинхронный веб-сервер Python
+- Redis как база данных корзин покупателей.
+- PostgreSQL как база данных товаров.
 
 ## Инфраструктура
 
@@ -27,13 +27,13 @@ PostgreSQL как база данных товаров.
 
 **Используемые технологии и инструменты:**
 
-Kubernetes
-kubeadm
-Helm
-Ingress nginx
-Docker
-Jenkins, werf
-Ansible
+- Kubernetes
+- kubeadm
+- Helm
+- Ingress nginx
+- Docker
+- Jenkins, werf
+- Ansible
 
 С помощью Ansible развертывается кластер Kubernetes с nginx ingress. Кластер Kubernetes формируется с помощью инструмента kubeadm.
 
