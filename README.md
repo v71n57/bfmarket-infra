@@ -57,8 +57,8 @@ git clone https://github.com/v71n57/bfmarket-infra
 
 **Ссылки на репозитарии:**
 
-- [Infra](https://github.com/v71n57/bfmarket-infra) 
-- [App](https://github.com/v71n57/bfmarket-app)
-- [Jenkins](https://github.com/v71n57/bfmarket-jenkins)
+- [Infra](https://github.com/v71n57/bfmarket-infra) vagrant, роли и модули для ansible
+- [App](https://github.com/v71n57/bfmarket-app) приложение
+- [Jenkins](https://github.com/v71n57/bfmarket-jenkins) джобы, пайплайны, shared library
 
  
