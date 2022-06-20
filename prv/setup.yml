@@ -1,0 +1,28 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Set up yandex mirror
+      copy:
+        src: yandex.list
+        dest: /etc/apt/sources.list.d/yandex.list
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Set up authorized key for vagrant
+      authorized_key:
+        user: vagrant
+        state: present
+        key: '{{ item }}'
+      with_file:
+        - install_rsa.pub
+
+    - name: Set up authorized key for root
+      authorized_key:
+        user: root
+        state: present
+        key: '{{ item }}'
+      with_file:
+        - install_rsa.pub
+

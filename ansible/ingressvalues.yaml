@@ -1,0 +1,6 @@
+#helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx -f /etc/nixos/ingressvalues.yaml
+
+controller:
+  dnsPolicy: ClusterFirstWithHostNet
+  hostNetwork: true
+  kind: DaemonSet

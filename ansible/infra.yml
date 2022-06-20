@@ -1,0 +1,40 @@
+---
+#ansible-playbook infra.yml -i hosts.yml --key-file ../prv/install_rsa
+
+- hosts: master
+  user: vagrant
+  become: true
+  become_method: sudo
+  become_user: root
+  roles:
+    - { role: init, tags: init }
+    - { role: cert}
+    - { role: docker-registry, tags: docker-registry }
+    - { role: java, tags: java }
+    - { role: jenkins, tags: jenkins-master }
+    - { role: k8s-master, tags: k8s-master }
+    # - { role: elasticsearch, tags: elk-server }
+    
+  vars:
+    # jenkins_hostname: jenkins.example.com
+    k8s_apiserver_ip: 192.168.10.10
+    cert_dir: cert
+    java_packages: openjdk-11-jdk
+
+- hosts: worker
+  user: vagrant
+  become: true
+  become_method: sudo
+  become_user: root
+  roles:
+    - { role: init, tags: init }
+    - { role: cert}
+    - { role: k8s-worker, tags: k8s-worker }
+    
+  vars:
+    # jenkins_hostname: jenkins.example.com
+    k8s_apiserver_ip: 192.168.10.10
+    cert_dir: cert
+    java_packages: openjdk-11-jdk
+
+

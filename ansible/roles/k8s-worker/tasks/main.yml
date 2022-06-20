@@ -1,0 +1,74 @@
+---
+# tasks file for k8s-worker
+
+- name: Add an apt signing key for Kubernetes
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+
+- name: Adding apt repository for Kubernetes
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    mode: '0644'
+    state: present
+    filename: kubernetes.list
+
+- name: Install Kubernetes binaries
+  apt: 
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+      - kubelet 
+      - kubeadm 
+      - kubectl
+
+- name: Add an apt signing key for Docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add apt repository for Docker and containerd stable version
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+    mode: '0644'
+    state: present
+    filename: docker.list
+
+- name: Install containerd.io
+  apt: 
+    name: "containerd.io"
+    state: present
+    update_cache: yes
+
+- name: Create a directory for containerd config
+  file: path=/etc/containerd state=directory
+
+- name: Get defaults from containerd.
+  command: containerd config default
+  register: containerd_config_default
+
+- name: Write defaults to config.toml.
+  copy:
+    dest: /etc/containerd/config.toml
+    mode: '0644'
+    content: "{{ containerd_config_default.stdout }}"
+
+- name: Restart containerd service
+  service:
+    name: containerd
+    daemon_reload: yes
+    state: restarted
+
+- name: Restart kubelet
+  service:
+    name: kubelet
+    daemon_reload: yes
+    state: restarted
+
+- name: Copy the join command to server location
+  copy: src=join-command dest=/tmp/join-command.sh mode=0777
+
+- name: Join the node to cluster
+  command: sh /tmp/join-command.sh

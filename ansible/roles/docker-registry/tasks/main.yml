@@ -1,0 +1,9 @@
+---
+# tasks file for ansible-docker-registry
+
+- include: base.yml 
+  tags: base
+
+- include: nginx.yml
+  when: use_nginx
+  tags: nginx

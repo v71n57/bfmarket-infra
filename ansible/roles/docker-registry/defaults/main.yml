@@ -1,0 +1,31 @@
+---
+# defaults file for ansible-docker-registry
+registry_domain: "localhost"
+domain: "{{registry_domain}}"
+log_level: info
+storage_type: local
+storage_path: /var/lib/docker-registry
+use_nginx: true
+registry_port: 80
+docker_registry_port: 5001
+# authenticated users
+use_auth: false
+auth_users: 
+  - { user: 'guest', passwd: '{PLAIN}secret' }
+
+# SSL Settings
+registry_ssl_port: 5000
+registry_ssl: true
+registry_ssl_cert: /etc/ssl/certs/docker_registry.crt
+registry_ssl_key: /etc/ssl/private/docker_registry.key
+create_ssl_cert: true
+
+cert_dir: cert
+# OpenSSL cert settings
+openssl_bits: 2048
+openssl_countryName: ES
+openssl_stateOrProvinceName: Madrid
+openssl_localityName: Madrid
+openssl_organizationName: MyCompany
+openssl_organizationalUnitName: 'Docker Registry'
+openssl_commonName: mycompany.com

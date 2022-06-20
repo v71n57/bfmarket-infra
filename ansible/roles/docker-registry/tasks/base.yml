@@ -1,0 +1,26 @@
+---
+# tasks file for ansible-docker-registry
+
+- name: Install latest version of Docker Registry
+  apt: name=docker-registry state=present
+  when: docker_registry_version is not defined
+  tags: base
+
+- name: Create required directories
+  file: dest={{ item }} state=directory
+  with_items:
+    - "{{ storage_path }}"
+    - /var/log/docker-registry
+    - /etc/docker/registry
+  tags: base
+
+- name: Set configuration file
+  template: >
+    src=config.yml.j2
+    dest=/etc/docker/registry/config.yml
+  notify: restart docker-registry
+  tags: base
+
+- name: Ensure Docker Registry is started and running
+  service: name=docker-registry state=started enabled=yes
+  tags: base

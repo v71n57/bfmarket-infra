@@ -1,0 +1,8 @@
+deb http://mirror.yandex.ru/ubuntu focal main restricted
+deb http://mirror.yandex.ru/ubuntu focal-updates main restricted
+deb http://mirror.yandex.ru/ubuntu focal universe
+deb http://mirror.yandex.ru/ubuntu focal-updates universe
+deb http://mirror.yandex.ru/ubuntu focal multiverse
+deb http://mirror.yandex.ru/ubuntu focal-updates multiverse
+deb http://mirror.yandex.ru/ubuntu focal-backports main restricted universe multiverse
+deb http://mirror.yandex.ru/ubuntu focal-security main restricted universe multiverse

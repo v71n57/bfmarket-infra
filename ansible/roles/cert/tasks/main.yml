@@ -1,0 +1,19 @@
+---
+# tasks file for cert
+
+- name: Install ca-certificates util
+  apt: name=ca-certificates state=present
+
+- name: Copy certificate
+  copy:
+    src: "{{playbook_dir}}/{{item}}/srvca.crt"
+    dest: /usr/local/share/ca-certificates/srvca.crt
+    owner: root
+    group: root
+    mode: '0644'
+    backup: no
+  with_items: "{{ cert_dir }}"
+
+- name: Update ca certificates
+  shell: update-ca-certificates
+
