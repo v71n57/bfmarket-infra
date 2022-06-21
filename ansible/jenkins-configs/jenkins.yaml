@@ -4,6 +4,7 @@ jenkins:
   numExecutors: 3
   scmCheckoutRetryCount: 5
   mode: NORMAL
+  authorizationStrategy: unsecured
 
 unclassified:
   globalLibraries:
