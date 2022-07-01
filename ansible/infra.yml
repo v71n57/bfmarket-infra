@@ -1,5 +1,4 @@
 ---
-#ansible-playbook infra.yml -i hosts.yml --key-file ../prv/install_rsa
 
 - hosts: master
   user: vagrant
@@ -7,19 +6,24 @@
   become_method: sudo
   become_user: root
   roles:
-    - { role: init, tags: init }
-    - { role: cert}
-    - { role: docker-registry, tags: docker-registry }
-    - { role: java, tags: java }
-    - { role: jenkins, tags: jenkins-master }
-    - { role: k8s-master, tags: k8s-master }
-    # - { role: elasticsearch, tags: elk-server }
-    
+    - { role: init }
+    - { role: cert }
+    - { role: docker-registry }
+    - { role: java }
+    - { role: jenkins }
+    # - { role: elasticsearch }
+    - { role: containerd }
+    - { role: kubernetes }
+    - { role: docker }
+
   vars:
     # jenkins_hostname: jenkins.example.com
-    k8s_apiserver_ip: 192.168.10.10
+    kubernetes_role: master
+    kubernetes_apiserver_advertise_address: 192.168.10.10
+    # ismaster: "yes"
     cert_dir: cert
     java_packages: openjdk-11-jdk
+    docker_users: ["vagrant"]
 
 - hosts: worker
   user: vagrant
@@ -27,14 +31,27 @@
   become_method: sudo
   become_user: root
   roles:
-    - { role: init, tags: init }
-    - { role: cert}
-    - { role: k8s-worker, tags: k8s-worker }
+    - { role: init }
+    - { role: cert }
+    - { role: containerd }
+    - { role: kubernetes }
     
   vars:
     # jenkins_hostname: jenkins.example.com
-    k8s_apiserver_ip: 192.168.10.10
+    kubernetes_role: node
+    kubernetes_apiserver_advertise_address: 192.168.10.10
     cert_dir: cert
     java_packages: openjdk-11-jdk
 
-
+- hosts: master
+  user: vagrant
+  become: true
+  become_method: sudo
+  become_user: root
+  roles:
+    - { role: cert }
+    - { role: helmingress }
+  
+  vars:
+    ismaster: "yes"
+    cert_dir: cert

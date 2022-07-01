@@ -17,3 +17,18 @@
 - name: Update ca certificates
   shell: update-ca-certificates
 
+- name: Copy certificate
+  copy:
+    src: "{{playbook_dir}}/{{item}}/srvca.crt"
+    dest: /tmp/srvca.crt
+    owner: root
+    group: root
+    mode: '0644'
+    backup: no
+  with_items: "{{ cert_dir }}"
+  when: ismaster == 'yes'
+
+- name: Install k8s generic registry-ca
+  become: false
+  command: kubectl create secret generic registry-ca --namespace kube-system --from-file=registry-ca=/tmp/srvca.crt
+  when: ismaster == 'yes'
